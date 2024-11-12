@@ -1,15 +1,19 @@
 import characters_detector as chs_d
-import image
+import project_image
 import numpy as np
+from PIL import Image
 
-ph = np.array(([[255, 0, 255], [255, 0, 255], [255, 0, 255]]))
-im = image.Image2DGreyScale(ph)
+real_img = Image.open("immagine_di_prova.JPG").convert("L")
+img = real_img
+ph = np.array(img)
+im = project_image.Image2DGreyScale(ph)
 im.show_image()
+
 cd = chs_d.GSUCCharactersDetector(im)
 cd.detect()
 rs = cd.results()
+
 for r in rs:
-    print(r.matrix)
     r.show_image()
 
 

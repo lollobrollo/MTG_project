@@ -21,13 +21,13 @@ class Image2DGreyScale:
             raise TypeError(f"An Exception occours while initializing a Image2D object. You should pass an np.ndarray as input.\nFound {type(matrix)}")
         if not matrix.ndim == 2:
             raise TypeError(f"An Exception occours while initializing a Image2D object. You should pass an np.ndarray with ndim == 2.\nFound {matrix.ndim}.")
-        width, height = matrix.shape 
+        height, width = matrix.shape 
         self.matrix = copy.deepcopy(matrix)
-        self.width = width
         self.height = height
+        self.width = width
 
     def show_image(self):
-        plt.imshow(self.matrix, cmap='gray') 
+        plt.imshow(self.matrix, cmap='gray',  vmin=0, vmax=256) 
         plt.show()
 
     def get_portion_of_image(self, min_y, min_x, max_y, max_x):
@@ -35,16 +35,19 @@ class Image2DGreyScale:
         This function return a portion of the image using the coordinates given to compute a rectangle.
 
         Parameters:
-        min_y (int) : left margin index.
-        min_x (int) : bottom margin index.
-        max_y (int) : right margin index.
-        max_x (int) : top margin index.
+        min_y (int) : bottom margin index.
+        min_x (int) : right margin index.
+        max_y (int) : top margin index.
+        max_x (int) : left margin index.
 
         Returns:
         A new image representing the portion of image desired.
         """
-        portion = copy.deepcopy(self.matrix[min_x:max_x, min_y: max_y])
+        portion = copy.deepcopy(self.matrix[min_y:max_y, min_x: max_x])
         return Image2DGreyScale(portion)
+    
+    def __str__(self):
+        return str(self.matrix)
 
 
 

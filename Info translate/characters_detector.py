@@ -14,9 +14,10 @@ centroid of the clusters.
 Pretty clever, isn't it?
 """
         
-import image
+import project_image
 import copy
 import networkx as nx
+import matplotlib.pyplot as plt
 
 class CharactersDetector():
 
@@ -40,7 +41,7 @@ class CharactersDetector():
         return None
         
 class GSUCCharactersDetector(CharactersDetector):
-    def __init__(self, img, threshold = 122):
+    def __init__(self, img, threshold = 50):
         """
         This is the class suited for detecting upper case text in a Image2DGreyScale object.
 
@@ -48,7 +49,7 @@ class GSUCCharactersDetector(CharactersDetector):
         img (must be a GreyScaleImage2D object) : the image containing the text.
         threshold (int) : the threshold used for the aactivation. Default is 122.
         """
-        if not type(img) == image.Image2DGreyScale:
+        if not type(img) == project_image.Image2DGreyScale:
             raise TypeError(f"An Exception occours while initializing a GSUCCharactersDetector object. The image type must be Image2DGreyScale.\nFound{type(img)}")
         super().__init__(img)
         if threshold > 225 or threshold < 0:
@@ -58,27 +59,22 @@ class GSUCCharactersDetector(CharactersDetector):
         self.__detected = False
     
     def detect(self):
-        self.__activate()
-        graph = {}
-        for i in range (0, self.img.height):
-            for j in range (0, self.img.width):
-                if self.img.matrix[i, j] == 255:
-                    t = []
-                    for idx in self.__neighbors(i, j):
-                        if self.img.matrix[idx] == 255:
-                            t.append(idx)
-                    graph[(i, j)] = copy.deepcopy(t)
-        G = nx.from_dict_of_lists(graph)
-        S = list(nx.connected_components(G))
-        print(S)
-        for char in S:
-            min_y, min_x, max_y, max_x = self.img.height, self.img.width, 0, 0
-            for x, y in char:
-                min_y, min_x, max_y, max_x = min(min_y, y), min(min_x, x), max(max_y, y), max(max_x, x)
-            max_x, max_y = (max_x + (max_x == min_x)), (max_y + (max_y == min_y))
-            print(f'{min_x} : {max_x} ; {min_y} : {max_y}')
-            self.__result.append(self.img.get_portion_of_image(min_y, min_x, max_y, max_x))          
-        self.__detected = True 
+        """
+        This is the core method of the class. Call this to detect the differents characters separately. 
+        """
+        if self.__detected == False:
+            self.__activate()
+            G = self.__graph_of_chars() # This is the graph representation of the img
+            S = [G.subgraph(c).copy() for c in nx.connected_components(G)]
+            for char in S:
+                min_y, min_x, max_y, max_x = self.img.height, self.img.width, 0, 0
+                for y, x in char:
+                    min_y, min_x, max_y, max_x = min(min_y, y), min(min_x, x), max(max_y, y), max(max_x, x)
+                self.__result.append(self.img.get_portion_of_image(min_y, min_x, max_y + 1, max_x + 1))          
+            self.__detected = True 
+
+        else:
+            print("Detection already done. Access the results via obectj_name.result")
 
     def __activate(self):
         """
@@ -91,6 +87,19 @@ class GSUCCharactersDetector(CharactersDetector):
         if self.__detected == False:
             raise Exception("Results not computed yet. Compute them with the detect method.")
         return self.__result
+    
+    def __graph_of_chars(self):
+        graph = {}
+        for i in range (0, self.img.height):
+            for j in range (0, self.img.width):
+                if self.img.matrix[i, j] == 255:
+                    t = []
+                    for idx in self.__neighbors(i, j):
+                        if self.img.matrix[idx] == 255:
+                            t.append(idx)
+                    graph[(i, j)] = copy.deepcopy(t)
+        G = nx.from_dict_of_lists(graph)
+        return G
 
     def __neighbors(self, i, j):
         neigh = []
