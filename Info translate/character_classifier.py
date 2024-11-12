@@ -10,7 +10,7 @@ from keras.models import Sequential
 from keras.layers import Conv2D, MaxPooling2D, Flatten, Dense, Dropout
 
 class CharacterRecognitionCNN:
-    def __init__(self, input_shape=(64, 64, 1), num_classes=128):
+    def __init__(self, input_shape=(64, 64), num_classes=128):
         self.model = Sequential([
             Conv2D(16, kernel_size=(3, 3), activation='relu', input_shape=input_shape),
             MaxPooling2D(pool_size=(2, 2)),
