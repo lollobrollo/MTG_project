@@ -45,6 +45,9 @@ class GSUCCharactersDetector(CharactersDetector):
     def detect(self):
         """
         This is the core method of the class. Call this to detect the differents characters separately. 
+        The actual idea of this method is that we set every pixel either to 0 or to 255.
+        Then we create the graph of the image, connecting with a crossneighbor all the 255 near. 
+        On the graoh we compute the connected compnonents and ta-dà: our characters are recognized.
         """
         if self.__detected == False:
             self.__activate()
