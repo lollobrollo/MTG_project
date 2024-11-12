@@ -1,6 +1,7 @@
 import numpy as np
 import copy
 from matplotlib import pyplot as plt
+from PIL import Image
 
 """
 We define our img class. We store our images as numpy ndarray but for utility we implement here a class 
@@ -49,5 +50,11 @@ class Image2DGreyScale:
     def __str__(self):
         return str(self.matrix)
 
-
+    def resize(self, new_width = 100, new_height = 150):
+        p = Image.fromarray(self.matrix)
+        p = p.resize([new_width, new_height])
+        p = np.array(p)
+        self.matrix = copy.deepcopy(p)
+        self.width = new_width
+        self.height = new_height
 

@@ -15,5 +15,6 @@ rs = cd.results()
 
 for r in rs:
     r.show_image()
+    
 
 

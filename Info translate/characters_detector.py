@@ -14,6 +14,7 @@ class CharactersDetector():
         img (img type) : The image containing the text where to detect the characters.
         """
         self.img = copy.deepcopy(img)
+        self.working_img = copy.deepcopy(img) # this is the actually img that we activate and work on
 
     def detect(self):
         """
@@ -31,7 +32,7 @@ class GSUCCharactersDetector(CharactersDetector):
 
         Parameters:
         img (must be a GreyScaleImage2D object) : the image containing the text.
-        threshold (int) : the threshold used for the aactivation. Default is 122.
+        threshold (int) : the threshold used for the aactivation. Default is 50.
         """
         if not type(img) == project_image.Image2DGreyScale:
             raise TypeError(f"An Exception occours while initializing a GSUCCharactersDetector object. The image type must be Image2DGreyScale.\nFound{type(img)}")
@@ -67,8 +68,8 @@ class GSUCCharactersDetector(CharactersDetector):
         """
         This function just set to 255 every bit greater than the thresholds and to 0 every bit smaller than it.
         """
-        self.img.matrix[self.img.matrix > self.__threshold] = 255
-        self.img.matrix[self.img.matrix <= self.__threshold] = 0
+        self.working_img.matrix[self.img.matrix > self.__threshold] = 255
+        self.working_img.matrix[self.img.matrix <= self.__threshold] = 0
 
     def results(self):
         if self.__detected == False:
@@ -79,10 +80,10 @@ class GSUCCharactersDetector(CharactersDetector):
         graph = {}
         for i in range (0, self.img.height):
             for j in range (0, self.img.width):
-                if self.img.matrix[i, j] == 255:
+                if self.working_img.matrix[i, j] == 255:
                     t = []
                     for idx in self.__neighbors(i, j):
-                        if self.img.matrix[idx] == 255:
+                        if self.working_img.matrix[idx] == 255:
                             t.append(idx)
                     graph[(i, j)] = copy.deepcopy(t)
         G = nx.from_dict_of_lists(graph)

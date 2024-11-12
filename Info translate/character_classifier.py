@@ -1,6 +1,6 @@
 import keras
 import numpy
 
-class SingleCharacterClassifier(keras.Sequential):
+class SingleCharacterClassifier(keras.Model):
     def __init__(self):
         pass
