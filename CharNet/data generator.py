@@ -45,8 +45,8 @@ def generate_dataset(chars, font_folder_path, size):
             for i in range (size):
                 generate_character_image(char, f"{char}_{i}_{j}", f"{font_folder_path}/{font}")
 
-chars = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 
-             '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '/', '.']
-
+#chars = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 
+#             '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '/', '.']
+chars = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
 generate_dataset(chars, font_folder_path, 10)
 
