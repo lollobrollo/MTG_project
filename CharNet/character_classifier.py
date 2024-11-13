@@ -15,29 +15,26 @@ This model will be a CNN.
 class CharacterRecognitionCNN:
     def __init__(self, input_shape=(64, 64, 1), num_classes=38):
         self.model = Sequential([
-            Conv2D(32, kernel_size=(3, 3), activation='relu', input_shape=input_shape),
+            Conv2D(16, kernel_size=(4, 4), activation='relu', input_shape=input_shape),
             MaxPooling2D(pool_size=(2, 2)),
 
-            Conv2D(32, kernel_size=(3, 3), activation='relu'),
+            Conv2D(32, kernel_size=(4, 4), activation='relu'),
             MaxPooling2D(pool_size=(2, 2)),
 
-            Conv2D(64, kernel_size=(3, 3), activation='relu'),
+            Conv2D(64, kernel_size=(4, 4), activation='relu'),
             MaxPooling2D(pool_size=(2, 2)),
     
-            Conv2D(128, kernel_size=(3, 3), activation='relu'),
+            Conv2D(128, kernel_size=(4, 4), activation='relu'),
             MaxPooling2D(pool_size=(2, 2)),
             
             Flatten(),
             Dense(128, activation='relu'),
-            Dropout(0.1),
-
-            Dense(64, activation='relu'),
-            Dropout(0.1),
+            Dropout(0.5),
   
             Dense(num_classes, activation='softmax')
         ])
 
-    def compile(self, learning_rate=0.001):
+    def compile(self, learning_rate=0.01):
         self.model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=learning_rate),
                            loss='categorical_crossentropy',
                            metrics=['accuracy'])
