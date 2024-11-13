@@ -32,7 +32,11 @@ def random_modify(img):
         result = img.filter(ImageFilter.BLUR)
     if f == 1:
         result = img.filter(ImageFilter.DETAIL)
-    return result
+    img = np.array(img)
+    noise = np.random.uniform(0, 1, img.shape)
+    actual_noise = np.array([[random.randint(100, 255) if n < 0.03 else 0 for n in nn] for nn in noise])
+    result = actual_noise + result
+    return Image.fromarray(result).convert('L')
 
 
 def generate_dataset(chars, font_folder_path, size):
@@ -44,4 +48,5 @@ def generate_dataset(chars, font_folder_path, size):
 chars = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 
              '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '/', '.']
 
+generate_dataset(chars, font_folder_path, 10)
 

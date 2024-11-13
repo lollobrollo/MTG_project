@@ -11,8 +11,6 @@ path = "random_chars"
 chars = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 
              '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '/', '.']
 
-
-
 def one_hot_encoder(y_value, chars):
     return np.array([1 if y_value == c else 0 for c in chars])
 
@@ -33,12 +31,13 @@ X = np.array(X)
 Y = np.array(Y)
 
 X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.15, random_state=42)
+X_train, X_val, Y_train, Y_val = train_test_split(X_train, Y_train, test_size=0.1, random_state=42)
 
 cnn_model = character_classifier.CharacterRecognitionCNN()
 cnn_model.compile()
-cnn_model.train(X_train, Y_train)
+cnn_model.train(X_train, Y_train, X_val, Y_val)
 cnn_model.evaluate(X_test, Y_test)
-cnn_model.save_weights('model_weights.h5') 
+cnn_model.save('model_weights.h5') 
 
 
 

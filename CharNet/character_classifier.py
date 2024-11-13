@@ -1,18 +1,24 @@
-import keras
+import os
+
+os.environ['TF_ENABLE_ONEDNN_OPTS'] = '0'
+
 import numpy
+import tensorflow as tf
+import keras
+from keras.models import Sequential
+from keras.layers import Conv2D, MaxPooling2D, Flatten, Dense, Dropout, Input
 
 """
 This model will be a CNN. 
 """
 
-import tensorflow as tf
-from keras.models import Sequential
-from keras.layers import Conv2D, MaxPooling2D, Flatten, Dense, Dropout
-
 class CharacterRecognitionCNN:
-    def __init__(self, input_shape=(64, 64), num_classes=38):
+    def __init__(self, input_shape=(64, 64, 1), num_classes=38):
         self.model = Sequential([
             Conv2D(32, kernel_size=(3, 3), activation='relu', input_shape=input_shape),
+            MaxPooling2D(pool_size=(2, 2)),
+
+            Conv2D(32, kernel_size=(3, 3), activation='relu'),
             MaxPooling2D(pool_size=(2, 2)),
 
             Conv2D(64, kernel_size=(3, 3), activation='relu'),
@@ -23,14 +29,17 @@ class CharacterRecognitionCNN:
             
             Flatten(),
             Dense(128, activation='relu'),
-            Dropout(0.5),
+            Dropout(0.1),
+
+            Dense(64, activation='relu'),
+            Dropout(0.1),
   
             Dense(num_classes, activation='softmax')
         ])
 
     def compile(self, learning_rate=0.001):
         self.model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=learning_rate),
-                           loss='sparse_categorical_crossentropy',
+                           loss='categorical_crossentropy',
                            metrics=['accuracy'])
     
     def summary(self):
