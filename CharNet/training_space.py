@@ -29,14 +29,8 @@ if __name__ == "__main__":
 
     print("Dataset done. \n")
 
-    for i in range (10):
-        img = Image.fromarray(X_train[i])
-        plt.imshow(img, cmap='gray', vmin = 0, vmax = 255)
-        plt.title(f'{one_hot_decoder(Y_train[i], chars)}')
-        plt.show()
-
     chars_model.compile()
-    chars_model.train(X_train, Y_train, X_val, Y_val, batch_size=32, epochs=10)
+    chars_model.train(X_train, Y_train, X_val, Y_val, batch_size=64, epochs=10)
     chars_model.evaluate(X_test, Y_test)
     chars_model.save()
 
@@ -48,18 +42,12 @@ if __name__ == "__main__":
 
     print("Making dataset for digits ...")
 
-    X, Y = dg.generate_dataset(digits, font_folder_path="font", size = 5) # creiamo sul momento il dataset
+    X, Y = dg.generate_dataset(digits, font_folder_path="font", size = 10) # creiamo sul momento il dataset
 
     X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.2)
     X_train, X_val, Y_train, Y_val = train_test_split(X_train, Y_train, test_size=0.2)
 
     print("Dataset done. \n")
-
-    for i in range (10):
-        img = Image.fromarray(X_train[i])
-        plt.imshow(img, cmap='gray', vmin = 0, vmax = 255)
-        plt.title(f'{one_hot_decoder(Y_train[i], digits)}')
-        plt.show()
 
     digits_model.compile()
     digits_model.train(X_train, Y_train, X_val, Y_val, batch_size=32, epochs=5)

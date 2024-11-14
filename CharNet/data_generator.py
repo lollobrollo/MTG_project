@@ -18,7 +18,7 @@ def one_hot_decoder(y, chars):
 def get_font_list(font_folder_path = "font"):
     return [f for f in os.listdir(font_folder_path) if os.path.isfile(os.path.join(font_folder_path, f))]
 
-def generate_character_image(c, font_path, font_size = 64, image_size = (64 ,64), color_text = 255, color_background = 0):
+def generate_character_image(c, font_path, font_size = 52, image_size = (64 ,64), color_text = 255, color_background = 0):
     image_width, image_height = image_size
 
     img = Image.new("L", (image_width, image_height), color_background)
