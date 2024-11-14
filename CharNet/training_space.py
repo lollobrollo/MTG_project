@@ -48,7 +48,7 @@ if __name__ == "__main__":
 
     print("Making dataset for digits ...")
 
-    X, Y = dg.generate_dataset(digits, font_folder_path="font", size = 10) # creiamo sul momento il dataset
+    X, Y = dg.generate_dataset(digits, font_folder_path="font", size = 5) # creiamo sul momento il dataset
 
     X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.2)
     X_train, X_val, Y_train, Y_val = train_test_split(X_train, Y_train, test_size=0.2)
@@ -62,6 +62,6 @@ if __name__ == "__main__":
         plt.show()
 
     digits_model.compile()
-    digits_model.train(X_train, Y_train, X_val, Y_val, batch_size=32, epochs=10)
+    digits_model.train(X_train, Y_train, X_val, Y_val, batch_size=32, epochs=5)
     digits_model.evaluate(X_test, Y_test)
     digits_model.save()
