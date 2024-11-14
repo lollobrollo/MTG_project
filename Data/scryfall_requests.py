@@ -36,7 +36,7 @@ def card_search(collector_number, set_name):
         response = requests.get(url, params=params)
 
         if response.status_code == 200: # The research succeded
-            card = response.json().get("data", [])[0] # access to first item, since we have only one card
+            card = response.json().get("data", [])[0] # access to current card
             results.append((card['name'], card['set_name']))
             if Verbose:
                 print(f"Name: {card['name']}")
@@ -55,8 +55,11 @@ def card_search(collector_number, set_name):
 if __name__ == "__main__":
 
     # Let's find the original Dreadmaw!
-    coll_num = 125
-    exp = 'XLN'
-    res = card_search([coll_num], [exp])
+    coll_num = [180]
+    exp = ['XLN']
+    res = card_search(coll_num, exp)
 
-   
+   # Try out the search with more than one card
+    coll_nums = [125,197,17]
+    exps = ['RIX','AFR','BFZ']
+    res = card_search(coll_nums, exps)
