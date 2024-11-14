@@ -9,7 +9,7 @@ class CharactersDetector():
         """
         Initialize a CharactersDetector. 
         The particular type of CharactersDetectors depends on the task.
-         
+        
         Parameters:
         img (img type) : The image containing the text where to detect the characters.
         """

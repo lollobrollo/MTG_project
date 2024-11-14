@@ -14,42 +14,69 @@ def one_hot_decoder(y, chars):
 
 if __name__ == "__main__":
 
-    # CHARS MODEL
+    bimodel = False
+
+    if bimodel:
+
+        # CHARS MODEL
+        
+        chars = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
+
+        chars_model = character_classifier.CharacterRecognitionCNN(num_classes=len(chars), filepath="charnet_chars_model.keras", loading=False)
+
+        print("Making dataset for chars ...")
+
+        X, Y = dg.generate_dataset(chars, font_folder_path="font", size = 5) # creiamo sul momento il dataset
+
+        X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.2)
+        X_train, X_val, Y_train, Y_val = train_test_split(X_train, Y_train, test_size=0.2)
+
+        print("Dataset done. \n")
+
+        chars_model.compile()
+        chars_model.train(X_train, Y_train, X_val, Y_val, batch_size=64, epochs=10)
+        chars_model.evaluate(X_test, Y_test)
+        chars_model.save()
+
+        # DIGITS MODEL
+
+        digits = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '/']
+
+        digits_model = character_classifier.CharacterRecognitionCNN(num_classes=len(digits), filepath="charnet_digits_model.keras", loading=False)
+
+        print("Making dataset for all chars ...")
+
+        X, Y = dg.generate_dataset(digits, font_folder_path="font", size = 5) # creiamo sul momento il dataset
+
+        X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.2)
+        X_train, X_val, Y_train, Y_val = train_test_split(X_train, Y_train, test_size=0.2)
+
+        print("Dataset done. \n")
+
+        digits_model.compile()
+        digits_model.train(X_train, Y_train, X_val, Y_val, batch_size=32, epochs=10)
+        digits_model.evaluate(X_test, Y_test)
+        digits_model.save()
     
-    chars = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
+    else:
 
-    chars_model = character_classifier.CharacterRecognitionCNN(num_classes=len(chars), filepath="charnet_chars_model.keras", loading=False)
+        # ALL CHAR MODEL
 
-    print("Making dataset for chars ...")
+        all_chars = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
+                 '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '/']
 
-    X, Y = dg.generate_dataset(chars, font_folder_path="font", size = 5) # creiamo sul momento il dataset
+        all_chars_model = character_classifier.CharacterRecognitionCNN(num_classes=len(all_chars), filepath="charnet_all_chars_model.keras", loading=False)
 
-    X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.2)
-    X_train, X_val, Y_train, Y_val = train_test_split(X_train, Y_train, test_size=0.2)
+        print("Making dataset for digits ...")
 
-    print("Dataset done. \n")
+        X, Y = dg.generate_dataset(all_chars, font_folder_path="font", size = 10) # creiamo sul momento il dataset
 
-    chars_model.compile()
-    chars_model.train(X_train, Y_train, X_val, Y_val, batch_size=64, epochs=10)
-    chars_model.evaluate(X_test, Y_test)
-    chars_model.save()
+        X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.2)
+        X_train, X_val, Y_train, Y_val = train_test_split(X_train, Y_train, test_size=0.2)
 
-    # DIGITS MODEL
+        print("Dataset done. \n")
 
-    digits = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '/']
-
-    digits_model = character_classifier.CharacterRecognitionCNN(num_classes=len(digits), filepath="charnet_digits_model.keras", loading=False)
-
-    print("Making dataset for digits ...")
-
-    X, Y = dg.generate_dataset(digits, font_folder_path="font", size = 5) # creiamo sul momento il dataset
-
-    X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.2)
-    X_train, X_val, Y_train, Y_val = train_test_split(X_train, Y_train, test_size=0.2)
-
-    print("Dataset done. \n")
-
-    digits_model.compile()
-    digits_model.train(X_train, Y_train, X_val, Y_val, batch_size=32, epochs=10)
-    digits_model.evaluate(X_test, Y_test)
-    digits_model.save()
+        all_chars_model.compile()
+        all_chars_model.train(X_train, Y_train, X_val, Y_val, batch_size=32, epochs=10)
+        all_chars_model.evaluate(X_test, Y_test)
+        all_chars_model.save()
