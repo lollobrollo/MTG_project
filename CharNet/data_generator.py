@@ -17,7 +17,7 @@ def one_hot_decoder(y, chars):
 def get_font_list(font_folder_path = "font"):
     return [f for f in os.listdir(font_folder_path) if os.path.isfile(os.path.join(font_folder_path, f))]
 
-def generate_character_image(c, font_path, font_size = 48, image_size = (64 ,64), color_text = 255, color_background = 0):
+def generate_character_image(c, font_path, font_size = 54, image_size = (64 ,64), color_text = 255, color_background = 0):
     image_width, image_height = image_size
 
     img = Image.new("L", (image_width, image_height), color_background)
@@ -28,12 +28,13 @@ def generate_character_image(c, font_path, font_size = 48, image_size = (64 ,64)
     text_height = font_size
     text_x = (image_width - text_width) // 2
     text_y = (image_height - text_height) // 2
-    draw.text((text_x, text_y), c, fill=color_text, font=font)
+    draw.text((text_x + random.uniform(-5, 5), text_y + random.uniform(-5, 5)), c, fill=color_text, font=font)
 
     img = random_noise(img)
     return img
 
 def random_noise(img):
+    img = img.filter(ImageFilter.BLUR)
     img = np.array(img)
     noise = np.random.uniform(0, 1, img.shape)
     actual_noise = np.array([[random.randint(100, 255) if n < 0.03 else 0 for n in nn] for nn in noise])
