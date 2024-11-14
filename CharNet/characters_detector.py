@@ -105,3 +105,6 @@ class GSUCCharactersDetector(CharactersDetector):
                     if w >= 0 and w < self.img.width:
                         neigh.append((i, w))
         return neigh
+    
+if __name__ == "__main__":
+    pass

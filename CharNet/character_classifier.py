@@ -63,4 +63,5 @@ class CharacterRecognitionCNN:
     def __call__(self, *args, **kwds):
         self.model.__call__(*args, **kwds)
 
-
+if __name__ == "__main__":
+    pass
