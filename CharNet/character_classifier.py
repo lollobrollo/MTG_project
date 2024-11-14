@@ -6,39 +6,38 @@ import numpy
 import tensorflow as tf
 import keras
 from keras.models import Sequential
-from keras.layers import Conv2D, MaxPooling2D, Flatten, Dense, Dropout, Input
+from keras.layers import Conv2D, MaxPooling2D, Flatten, Dense
 
 """
 This model will be a CNN. 
 """
 
 class CharacterRecognitionCNN:
-    def __init__(self, input_shape=(64, 64, 1), num_classes=38):
-        self.model = Sequential([
-            Conv2D(16, kernel_size=(3, 3), activation='relu', input_shape=input_shape),
-            MaxPooling2D(pool_size=(2, 2)),
+    def __init__(self, filepath, loading = False, input_shape=(64, 64, 1), num_classes=38):
+        self.filepath = filepath
+        if not loading:
+            self.model = Sequential([
+                Conv2D(32, kernel_size=(3, 3), activation='relu', padding = 'same', input_shape=input_shape),
+                MaxPooling2D(pool_size=(2, 2)),
 
-            Conv2D(32, kernel_size=(3, 3), activation='relu'),
-            MaxPooling2D(pool_size=(2, 2)),
+                Conv2D(64, kernel_size=(3, 3), activation='relu', padding = 'same'),
+                MaxPooling2D(pool_size=(2, 2)),
+        
+                Conv2D(128, kernel_size=(3, 3), activation='relu', padding = 'same'),
+                MaxPooling2D(pool_size=(2, 2)),
+                
+                Flatten(),
+                Dense(128, activation='relu'),
 
-            Conv2D(64, kernel_size=(3, 3), activation='relu'),
-            MaxPooling2D(pool_size=(2, 2)),
+                Dense(62, activation='relu'),
     
-            Conv2D(128, kernel_size=(3, 3), activation='relu'),
-            MaxPooling2D(pool_size=(2, 2)),
-            
-            Flatten(),
-            Dense(128, activation='relu'),
-            Dropout(0.5),
+                Dense(num_classes, activation='softmax')
+            ])
+        else:
+            self.load()
 
-            Dense(62, activation='relu'),
-            Dropout(0.5),
-  
-            Dense(num_classes, activation='softmax')
-        ])
-
-    def compile(self, learning_rate=0.01):
-        self.model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=learning_rate),
+    def compile(self, learning_rate=0.001):
+        self.model.compile(optimizer=keras.optimizers.RMSprop(learning_rate),
                            loss='categorical_crossentropy',
                            metrics=['accuracy'])
     
@@ -54,4 +53,14 @@ class CharacterRecognitionCNN:
     
     def evaluate(self, x_test, y_test):
         return self.model.evaluate(x_test, y_test)
+    
+    def save(self):
+        keras.saving.save_model(self.model, self.filepath)
+
+    def load(self):
+        self.model = keras.saving.load_model(self.filepath)
+        
+    def __call__(self, *args, **kwds):
+        self.model.__call__(*args, **kwds)
+
 

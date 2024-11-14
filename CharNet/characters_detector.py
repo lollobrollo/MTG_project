@@ -76,6 +76,11 @@ class GSUCCharactersDetector(CharactersDetector):
             raise Exception("Results not computed yet. Compute them with the detect method.")
         return self.__result
     
+    def resized_results(self, new_width, new_height):
+        for i in range (len(self.__result)):
+            self.__result[i].resize(new_width, new_height)
+        return self.__result
+    
     def __graph_of_chars(self):
         graph = {}
         for i in range (0, self.img.height):
