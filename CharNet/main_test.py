@@ -40,7 +40,7 @@ if __name__ == "__main__":
 
     bimodel = True
 
-    im = Image.open("./foto_di_prova/5.jpeg").convert('L')
+    im = Image.open("./foto_di_prova/6.jpeg").convert('L')
     ph = np.array(im)
     img = pi.Image2DGreyScale(ph)
     detector = cd.GSUCCharactersDetector(img)
