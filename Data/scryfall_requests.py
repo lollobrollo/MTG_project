@@ -117,7 +117,7 @@ def card_search_batch(collector_number, set_name, lang):
             if Verbose:
                 print(f"Error: {response.status_code} - {response.json().get('details', 'No details')}")
 
-    return [(r[0], r[1], l) for r, l in zip(results, lang)]
+    return [(str(r[0]), str(r[1]), str(l)) for r, l in zip(results, lang)]
 
 
 ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
