@@ -27,8 +27,9 @@ class Image2DGreyScale:
         self.height = height
         self.width = width
 
-    def show_image(self):
+    def show_image(self, label = ""):
         plt.imshow(self.matrix, cmap='gray',  vmin=0, vmax=255) 
+        plt.title(label)
         plt.show()
 
     def get_portion_of_image(self, min_y, min_x, max_y, max_x):
@@ -58,3 +59,5 @@ class Image2DGreyScale:
         self.width = new_width
         self.height = new_height
 
+if __name__ == "__main__":
+    pass
