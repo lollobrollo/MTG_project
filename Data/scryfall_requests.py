@@ -131,9 +131,9 @@ if __name__ == "__main__":
     lang = ['EN']
     card_search_one_by_one(coll_num, exp, lang)
 
-   # Try out the search with more than one card
+   # Try out the search with more than one card (and an error in the input)
     coll_nums = [125,197,17]
-    exps = ['RIX','AFR','BFZ']
+    exps = ['RIX','AFR','BF']
     langs = ['EN','IT','EN']
     res = card_search_one_by_one(coll_nums, exps, langs)
     print(res)
